@@ -1,24 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Landingpage from './Components/Landingpage';
+import Homepgae from './Components/Homepgae';
+import ForgotPass from './Components/ForgotPass';
+import Auth from './Components/Auth';
+import Stories from './Components/Stories';
+import Project from './Components/Project';
+import ProjectId from './Contexts/ProjectId';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    <ProjectId>
+    <Routes>
+      <Route path='/' element={<Landingpage />} />
+      <Route path='/login' element={<Auth />} />
+      <Route path='/home' element={<Homepgae />} />
+      <Route path='/Reset-Password' element={<ForgotPass />} />
+      <Route path='/stories' element={<Stories />}/>
+      <Route path='/project/:id' element={<Project />} />
+    </Routes>
+    </ProjectId>
+    </BrowserRouter>
   );
 }
 

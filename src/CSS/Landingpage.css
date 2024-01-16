@@ -1,0 +1,23 @@
+#heading1{
+    text-align: center;
+    font-family: "Audiowide", sans-serif;
+}
+
+#vector1 {
+   
+    animation-name: appear;
+    animation-duration: 3s;
+  }
+  
+  @keyframes appear {
+    0%   {opacity: 0;}
+   
+    50%  {opacity: 0;}
+    
+    100% {opacity: 1;}
+  }
+
+  #Uses{
+   text-align: center;
+    
+  }

@@ -8,12 +8,14 @@ import Auth from './Components/Auth';
 import Stories from './Components/Stories';
 import Project from './Components/Project';
 import ProjectId from './Contexts/ProjectId';
+import StoryId from './Contexts/StoryId';
 
 
 function App() {
   return (
     <BrowserRouter>
     <ProjectId>
+      <StoryId>
     <Routes>
       <Route path='/' element={<Landingpage />} />
       <Route path='/login' element={<Auth />} />
@@ -21,7 +23,9 @@ function App() {
       <Route path='/Reset-Password' element={<ForgotPass />} />
       <Route path='/stories' element={<Stories />}/>
       <Route path='/project/:id' element={<Project />} />
+      <Route path='/story/:id' element={<Stories />} />
     </Routes>
+    </StoryId>
     </ProjectId>
     </BrowserRouter>
   );

@@ -18,6 +18,9 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import ModalStory from './ModalStory';
+import Table from 'react-bootstrap/Table';
+import { StoryContext } from '../Contexts/StoryId';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -27,9 +30,11 @@ import ModalStory from './ModalStory';
 const Project = () => {
 
     const [projectId, setProjectId] = useContext(projectIdContext)
+    const [storyId, setStoryId] = useContext(StoryContext)
     const BASE_URL = 'http://localhost:3003/api';
     const [project, setProject] = useState(null)
     const [show, setShow] = useState(false);
+    const [storyIndex,setStoryIndex] = useState(null)
     const [initials, setInitials] = useState([])
     const [contributors, setContributors] = useState([])
     const authToken = localStorage.getItem('token');
@@ -41,9 +46,20 @@ const Project = () => {
 
     const [showStory, setShowStory] = useState(false);
 
-    
+
     const handleStoryShow = () => setShowStory(true);
     const handleStoryClose = () => setShowStory(false);
+    const navigate = useNavigate()
+
+    const [showDelete, setShowDelete] = useState(false);
+
+    const handleCloseDelete = () => setShowDelete(false);
+    const handleShowDelete = (id) => {
+
+        setShowDelete(true);
+        setStoryIndex(id)
+
+    } 
 
 
 
@@ -70,7 +86,9 @@ const Project = () => {
             }
         }
 
-        fetchProject()
+        if (projectId) {
+            fetchProject();
+        }
     }, [project])
 
     async function ContributorHandler() {
@@ -107,15 +125,39 @@ const Project = () => {
         }
     }
 
+    function storyRedirect(mongoId, storyId) {
 
+        setStoryId(mongoId)
+        navigate(`/story/${storyId}`)
+
+    }
 
     function changeHandler(e) {
         setEmail({ ...email, [e.target.name]: e.target.value })
     }
+
+    async function handleStoryDelete(){
+        try{
+
+            const response = await axios.delete(`${BASE_URL}/project/${projectId}/${storyIndex}`,{
+                headers: {
+                    'auth-token': authToken
+                }
+            })
+            setProject(response.data.updatedProject)
+            handleCloseDelete()
+
+        }catch(e){
+            console.log(e)
+        }
+    }
+
+
     return (
         <div>
 
             <NavMain />
+
             <Container className='mt-1 d-flex justify-content-center flex-column align-items-center'>
                 {project && ( // Add a null check before accessing project.Name
                     <Card sx={{ minWidth: '90vw', minHeight: '30vh', marginTop: '3%' }}>
@@ -209,7 +251,88 @@ const Project = () => {
 
                 </Modal.Footer>
             </Modal>
-            <ModalStory show={showStory} handleClose={handleStoryClose} developers={contributors} projectId={projectId}/>
+            <ModalStory
+                show={showStory}
+                handleClose={handleStoryClose}
+                developers={contributors}
+                projectId={projectId}
+            />
+
+            <Container style={{ marginTop: '80px' }}>
+
+                {
+                    (project && project.Data.length > 0) ? (
+                        <Table striped>
+                            <thead>
+                                <tr>
+                                    <th>Story ID</th>
+                                    <th>Title</th>
+                                    <th>Developer</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {
+                                    project ? project.Data.map((story) => {
+                                        return (
+
+                                            <tr>
+                                                <td>{story.StoryId}</td>
+                                                <td>{story.Title}</td>
+                                                <td>{story.Developer}</td>
+                                                <td>{story.Status}</td>
+                                                <td>
+                                                    <span>
+                                                        <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">View This Story</Tooltip>} placement="bottom">
+                                                            <i class="fa-regular fa-eye" style={{ cursor: "pointer", fontSize: '15px', color: 'blue' }} onClick={() => storyRedirect(story._id, story.StoryId)}></i>
+                                                        </OverlayTrigger>
+                                                    </span>
+                                                    <span>
+                                                        <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Delete This Story</Tooltip>} placement="bottom">
+                                                            <i class="fa-solid fa-trash" style={{ cursor: "pointer", fontSize: '15px', color: 'red', marginLeft: '5px' }} onClick={() => handleShowDelete(story._id)}></i>
+                                                        </OverlayTrigger>
+                                                    </span>
+
+
+                                                </td>
+                                            </tr>
+
+                                        )
+                                    }) : null
+                                }
+
+
+                            </tbody>
+                        </Table>
+                    ) : null
+                }
+
+
+
+
+
+
+
+            </Container>
+
+            <Modal show={showDelete} onHide={handleCloseDelete}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Delete</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this story?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDelete}>
+                        Close
+                    </Button>
+                    <Button variant="danger" onClick={handleStoryDelete} o>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+
 
         </div>
     )

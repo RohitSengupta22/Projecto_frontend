@@ -29,8 +29,8 @@ const NavMain = ({initials}) => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
-                        <Nav.Link as={NavLink} to="/stories"><b>Stories</b></Nav.Link>
-                        <Nav.Link href="#home"><b>Contributions</b></Nav.Link>
+                        <Nav.Link as={NavLink} to="/home"><b>Home</b></Nav.Link>
+                        <Nav.Link as={NavLink} to='/contributions'><b>Contributions</b></Nav.Link>
                         <Nav.Link href="#home"><b>Boards</b></Nav.Link>
                         <Container style={{textAlign: 'center'}}><Avatar sx={{ bgcolor: deepPurple[500],width: 40, height: 40 }}>{initials}</Avatar></Container>
                         <i class="fa-solid fa-right-from-bracket" style={{position: 'relative', top: '15px',left: '20px',cursor: 'pointer'}} onClick={logoutHandler}></i>

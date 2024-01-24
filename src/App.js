@@ -9,6 +9,7 @@ import Stories from './Components/Stories';
 import Project from './Components/Project';
 import ProjectId from './Contexts/ProjectId';
 import StoryId from './Contexts/StoryId';
+import Contributions from './Components/Contributions';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path='/stories' element={<Stories />}/>
       <Route path='/project/:id' element={<Project />} />
       <Route path='/story/:id' element={<Stories />} />
+      <Route path='/contributions' element={<Contributions />} />
     </Routes>
     </StoryId>
     </ProjectId>

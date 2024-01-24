@@ -12,6 +12,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
+import ModalUpdStory from './ModalUpdStory';
 
 const Stories = () => {
 
@@ -19,6 +20,10 @@ const Stories = () => {
   const [storyId, setStoryId] = useContext(StoryContext)
   const [story, setStory] = useState(null)
   const BASE_URL = 'http://localhost:3003/api';
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
 
   useEffect(() => {
@@ -41,7 +46,7 @@ const Stories = () => {
     if (projectId && storyId) {
       fetchStory();
     }
-  }, [])
+  }, [story])
 
 
   return (
@@ -84,7 +89,7 @@ const Stories = () => {
                 <b>Priority: </b><i>{story.Priority}</i>
               </Typography>
               <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Edit Story</Tooltip>} placement="bottom">
-                <i class="fa-solid fa-pen-to-square" style={{ cursor: 'pointer' }}></i>
+                <i class="fa-solid fa-pen-to-square" style={{ cursor: 'pointer' }} onClick={handleShow}></i>
               </OverlayTrigger>
             </CardContent>
             <CardActions sx={{ marginLeft: '10px', display: 'flex', justifyContent: 'space-between' }}>
@@ -98,6 +103,8 @@ const Stories = () => {
             </CardActions>
           </Card>
         )}
+
+        <ModalUpdStory show={show} handleClose={handleClose} projectId={projectId} storyId={storyId}/>
 
        
 

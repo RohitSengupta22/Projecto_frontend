@@ -158,12 +158,7 @@ function ModalUpdStory({ show, handleClose, projectId,storyId }) {
                         <option value="Low">Low</option>
                     </Form.Select>
 
-                    <Form.Select aria-label="Default select example" className="mb-3" onChange={changeHandler} name='Status' value={storyCred && storyCred.Status}>
-                        <option>Status</option>
-                        <option value="Not Started">Not Started</option>
-                        <option value="Doing">Doing</option>
-                        <option value="Done">Done</option>
-                    </Form.Select>
+
 
 
 

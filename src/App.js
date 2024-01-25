@@ -10,6 +10,9 @@ import Project from './Components/Project';
 import ProjectId from './Contexts/ProjectId';
 import StoryId from './Contexts/StoryId';
 import Contributions from './Components/Contributions';
+import RoProjects from './Components/Contributions/RoProjects';
+import RoStories from './Components/Contributions/RoStories';
+
 
 
 function App() {
@@ -26,6 +29,11 @@ function App() {
       <Route path='/project/:id' element={<Project />} />
       <Route path='/story/:id' element={<Stories />} />
       <Route path='/contributions' element={<Contributions />} />
+      <Route path='/roproject/:id' element={<RoProjects />} />
+      <Route path='/rostory/:id' element={<RoStories />} />
+      
+
+
     </Routes>
     </StoryId>
     </ProjectId>

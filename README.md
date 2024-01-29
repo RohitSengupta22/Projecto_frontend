@@ -45,4 +45,8 @@ This project is licensed under the MIT License.
 
 ## Contact
 
+<<<<<<< HEAD
 For any questions or suggestions, please open an issue in the GitHub repository.
+=======
+For any questions or suggestions, please open an issue in the GitHub repository.
+>>>>>>> 08ca2ff04c3756f1d103a08cc83f65245415fe94

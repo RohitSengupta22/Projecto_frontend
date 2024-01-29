@@ -13,6 +13,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import RoModalUpdStory from './RoModalUpdStory';
+import Comments from '../Comments';
 
 const RoStories = () => {
 
@@ -24,6 +25,10 @@ const RoStories = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showComments, setShowComments] = useState(false);
+
+  const handleCloseComments = () => setShowComments(false);
+  const handleShowComments = () => setShowComments(true);
 
 
   useEffect(() => {
@@ -91,7 +96,12 @@ const RoStories = () => {
               <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Change Status</Tooltip>} placement="bottom">
                 <i class="fa-solid fa-bars-progress" style={{ cursor: 'pointer' }} onClick={handleShow}></i>
               </OverlayTrigger>
+              <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Comments</Tooltip>} placement="bottom">
+              <i class="fa-solid fa-comment"  style={{ cursor: 'pointer',marginLeft: '10px' }} onClick={handleShowComments} ></i>
+              </OverlayTrigger>
+           
             </CardContent>
+            
             <CardActions sx={{ marginLeft: '10px', display: 'flex', justifyContent: 'space-between' }}>
 
 
@@ -123,6 +133,8 @@ const RoStories = () => {
           />
         </FloatingLabel>
         </Container>
+
+        <Comments show={showComments} handleClose={handleCloseComments} story={story} />
 
 
     </div>

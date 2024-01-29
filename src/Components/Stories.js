@@ -13,6 +13,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import ModalUpdStory from './ModalUpdStory';
+import Comments from './Comments';
 
 const Stories = () => {
 
@@ -24,6 +25,10 @@ const Stories = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showComments, setShowComments] = useState(false);
+
+  const handleCloseComments = () => setShowComments(false);
+  const handleShowComments = () => setShowComments(true);
 
 
   useEffect(() => {
@@ -91,6 +96,9 @@ const Stories = () => {
               <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Edit Story</Tooltip>} placement="bottom">
                 <i class="fa-solid fa-pen-to-square" style={{ cursor: 'pointer' }} onClick={handleShow}></i>
               </OverlayTrigger>
+              <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Comments</Tooltip>} placement="bottom">
+              <i class="fa-solid fa-comment"  style={{ cursor: 'pointer',marginLeft: '10px' }} onClick={handleShowComments} ></i>
+              </OverlayTrigger>
             </CardContent>
             <CardActions sx={{ marginLeft: '10px', display: 'flex', justifyContent: 'space-between' }}>
 
@@ -123,6 +131,8 @@ const Stories = () => {
           />
         </FloatingLabel>
         </Container>
+
+        <Comments show={showComments} handleClose={handleCloseComments} />
 
 
     </div>

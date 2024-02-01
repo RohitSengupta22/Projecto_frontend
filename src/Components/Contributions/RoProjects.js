@@ -300,7 +300,9 @@ const RoProjects = () => {
 
                 <Container style={{textAlign: 'center'}}>
 
-                <FormControlLabel control={<Switch defaultChecked={checked}/>} label={checked ? "Remove Highlight" : "Highlight Your Stories"} onClick={()=>setChecked(!checked)}/>
+               {
+                (project && project.Data.length>0) ? <FormControlLabel control={<Switch defaultChecked={checked}/>} label={checked ? "Remove Highlight" : "Highlight Your Stories"} onClick={()=>setChecked(!checked)}/> : null
+               } 
 
                 </Container>
 

@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import '../CSS/ForgotPass.css'
 import { useNavigate } from 'react-router-dom';
 const ForgotPass = () => {
   const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
@@ -149,7 +150,7 @@ const ForgotPass = () => {
           </Backdrop>
         </div>
       )}
-      <div style={{ width: '500px', height: '200px', backgroundColor: 'white', boxShadow: '3px 3px rgba(0, 0, 0, 0.43)', borderRadius: '10px', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }}>
+      <div className='credbox' style={{ width: '500px', height: '200px', backgroundColor: 'white', boxShadow: '3px 3px rgba(0, 0, 0, 0.43)', borderRadius: '10px', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }}>
         {reset ? (
           verifyKey ? (
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

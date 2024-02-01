@@ -11,3 +11,12 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+@media screen and (max-width: 999px) {
+    #logout {
+      position: absolute;
+      text-align: center;
+      top: -148px !important;
+      
+    }
+  }

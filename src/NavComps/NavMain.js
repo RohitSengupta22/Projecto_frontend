@@ -33,7 +33,7 @@ const NavMain = ({initials}) => {
                         <Nav.Link as={NavLink} to='/contributions'><b>Contributions</b></Nav.Link>
                        
                         <Container style={{textAlign: 'center'}}><Avatar sx={{ bgcolor: deepPurple[500],width: 40, height: 40 }}>{initials}</Avatar></Container>
-                        <i class="fa-solid fa-right-from-bracket" style={{position: 'relative', top: '15px',left: '20px',cursor: 'pointer'}} onClick={logoutHandler}></i>
+                        <i class="fa-solid fa-right-from-bracket" style={{position: 'relative', top: '15px',left: '20px',cursor: 'pointer'}} onClick={logoutHandler} id="logout"></i>
 
 
                     </Nav>

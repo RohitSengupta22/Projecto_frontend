@@ -16,7 +16,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const Auth = () => {
 
-    const BASE_URL = 'https://projecto-ha1h.onrender.com'
+    const BASE_URL = 'https://projecto-ha1h.onrender.com/api'
     const navigate = useNavigate();
     const [account, setAccount] = useState(true);
     const [toaststate, setToastState] = useState(false)

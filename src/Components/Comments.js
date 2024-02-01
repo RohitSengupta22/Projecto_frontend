@@ -18,7 +18,7 @@ function Comments({ show, handleClose,story }) {
     const [user,setUser] = useState('')
     const curr = useRef()
     const authToken = localStorage.getItem('token');
-    const BASE_URL = 'https://projecto-ha1h.onrender.com';
+    const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
 
     const [comment, setComment] = useState({
 

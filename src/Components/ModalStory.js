@@ -12,7 +12,7 @@ import axios from 'axios';
 function ModalStory({ show, handleClose, developers, projectId }) {
 
     const [contributors, setContributors] = useState([])
-    const BASE_URL = 'http://localhost:3003/api';
+    const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
     const authToken = localStorage.getItem('token');
     useEffect(() => {
         setContributors(developers)
@@ -25,7 +25,7 @@ function ModalStory({ show, handleClose, developers, projectId }) {
         Description: '',
         Developer: '',
         Classification: '',
-        Deadline: value
+        Deadline: value+' (yyyy/mm/dd)'
     })
 
     function changeHandler(e) {

@@ -13,11 +13,34 @@ import { projectIdContext } from '../Contexts/ProjectId';
 import axios from 'axios';
 
 const Contributions = () => {
-    const BASE_URL = 'http://localhost:3003/api';
+    const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
     const authToken = localStorage.getItem('token');
     const [Roprojects, setRoProjects] = useState(null);
     const [projectId, setProjectId] = useContext(projectIdContext)
+    const [identity,setIdentity] = useState('')
     const navigate = useNavigate()
+
+    useEffect(()=>{
+        async function fetchUser(){
+          try{
+    
+            const response = await axios.get(`${BASE_URL}/user`,{
+              headers: {
+                'auth-token' : authToken
+              }
+            })
+    
+            setIdentity(response.data.loggedInUser.Name.substr(0,2).toUpperCase())
+    
+          }catch(error){
+    
+            console.log(error)
+    
+          }
+        }
+    
+        fetchUser()
+      },[])
 
     useEffect(() => {
         async function fetchRoProjects() {
@@ -77,7 +100,7 @@ const Contributions = () => {
 
     return (
         <div>
-            <NavMain />
+            <NavMain initials={identity}/>
 
             <Container className='mt-1'>
                 <Row>{renderProjects()}</Row>

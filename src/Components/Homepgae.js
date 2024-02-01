@@ -22,7 +22,7 @@ import { projectIdContext } from '../Contexts/ProjectId';
 
 const Homepgae = () => {
   const [projects, setProjects] = useState([]);
-  const BASE_URL = 'http://localhost:3003/api';
+  const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
   const authToken = localStorage.getItem('token');
   const navigate = useNavigate();
   const [show, setShow] = useState(false);

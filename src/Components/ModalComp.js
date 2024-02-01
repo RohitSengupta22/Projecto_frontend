@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 function ModalComp({ show, handleClose,updateProjects }) {
 
-    const BASE_URL = 'http://localhost:3003/api'
+    const BASE_URL = 'https://projecto-ha1h.onrender.com/api'
     const authToken = localStorage.getItem('token')
     
     const [projectCred,setProjectCred] = useState({

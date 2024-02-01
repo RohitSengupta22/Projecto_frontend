@@ -20,16 +20,38 @@ const RoStories = () => {
   const [projectId, setProjectId] = useContext(projectIdContext)
   const [storyId, setStoryId] = useContext(StoryContext)
   const [story, setStory] = useState(null)
-  const BASE_URL = 'http://localhost:3003/api';
+  const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
   const [show, setShow] = useState(false);
-
+  const authToken = localStorage.getItem('token');
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showComments, setShowComments] = useState(false);
-
+  const [identity,setIdentity] = useState(true)
   const handleCloseComments = () => setShowComments(false);
   const handleShowComments = () => setShowComments(true);
 
+
+  useEffect(()=>{
+    async function fetchUser(){
+      try{
+
+        const response = await axios.get(`${BASE_URL}/user`,{
+          headers: {
+            'auth-token' : authToken
+          }
+        })
+
+        setIdentity(response.data.loggedInUser.Name.substr(0,2).toUpperCase())
+
+      }catch(error){
+
+        console.log(error)
+
+      }
+    }
+
+    fetchUser()
+  },[])
 
   useEffect(() => {
     async function fetchStory() {
@@ -57,7 +79,7 @@ const RoStories = () => {
   return (
     <div>
 
-      <NavMain />
+      <NavMain initials={identity}/>
       <Container className='mt-1 d-flex justify-content-center flex-column align-items-center'>
         {story && ( // Add a null check before accessing project.Name
           <Card sx={{ minWidth: '90vw', minHeight: '30vh', marginTop: '3%' }}>

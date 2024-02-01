@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from 'react-bootstrap/esm/Container';
 import '../../CSS/Project.css'
 import Modal from 'react-bootstrap/Modal';
+import Pagination from 'react-bootstrap/Pagination';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import TextField from '@mui/material/TextField';
@@ -21,6 +22,9 @@ import ModalStory from '../ModalStory';
 import Table from 'react-bootstrap/Table';
 import { StoryContext } from '../../Contexts/StoryId';
 import { useNavigate } from 'react-router-dom';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 
 
@@ -31,10 +35,10 @@ const RoProjects = () => {
 
     const [projectId, setProjectId] = useContext(projectIdContext)
     const [storyId, setStoryId] = useContext(StoryContext)
-    const BASE_URL = 'http://localhost:3003/api';
+    const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
     const [project, setProject] = useState(null)
     const [show, setShow] = useState(false);
-    const [storyIndex,setStoryIndex] = useState(null)
+    const [storyIndex, setStoryIndex] = useState(null)
     const [initials, setInitials] = useState([])
     const [contributors, setContributors] = useState([])
     const authToken = localStorage.getItem('token');
@@ -50,17 +54,54 @@ const RoProjects = () => {
     const handleStoryShow = () => setShowStory(true);
     const handleStoryClose = () => setShowStory(false);
     const navigate = useNavigate()
-
+    const [identity, setIdentity] = useState('')
     const [showDelete, setShowDelete] = useState(false);
-
+    const [user,setUser] = useState('')
     const handleCloseDelete = () => setShowDelete(false);
     const handleShowDelete = (id) => {
 
         setShowDelete(true);
         setStoryIndex(id)
 
-    } 
+    }
 
+    const [checked,setChecked] = useState(false)
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+
+
+    const totalPages = project ? Math.ceil(project.Data.length / itemsPerPage) : 0;
+
+
+    useEffect(() => {
+        async function fetchUser() {
+            try {
+
+                const response = await axios.get(`${BASE_URL}/user`, {
+                    headers: {
+                        'auth-token': authToken
+                    }
+                })
+
+                console.log(response.data)
+
+                setIdentity(response.data.loggedInUser.Name.substr(0, 2).toUpperCase())
+                setUser(response.data.loggedInUser.Email)
+
+            } catch (error) {
+
+                console.log(error)
+
+            }
+        }
+
+        fetchUser()
+    }, [])
 
 
 
@@ -71,7 +112,7 @@ const RoProjects = () => {
                 const response = await axios.get(`${BASE_URL}/project/${projectId}`)
 
                 setProject(response.data.project)
-                console.log(response.data.project)
+                
                 const initialsArr = response.data.project.AccessedBy.map((initials) => {
                     return initials.Name.substring(0, 2)
                 })
@@ -136,10 +177,10 @@ const RoProjects = () => {
         setEmail({ ...email, [e.target.name]: e.target.value })
     }
 
-    async function handleStoryDelete(){
-        try{
+    async function handleStoryDelete() {
+        try {
 
-            const response = await axios.delete(`${BASE_URL}/project/${projectId}/${storyIndex}`,{
+            const response = await axios.delete(`${BASE_URL}/project/${projectId}/${storyIndex}`, {
                 headers: {
                     'auth-token': authToken
                 }
@@ -147,16 +188,25 @@ const RoProjects = () => {
             setProject(response.data.updatedProject)
             handleCloseDelete()
 
-        }catch(e){
+        } catch (e) {
             console.log(e)
         }
     }
+
+    const displayedStories = project?.Data ? project.Data.slice(startIndex, endIndex) : [];
+
+    useEffect(() => {
+        if (displayedStories.length === 0 && currentPage > 1) {
+            setCurrentPage((prevPage) => prevPage - 1);
+        }
+    }, [displayedStories, currentPage]);
+
 
 
     return (
         <div>
 
-            <NavMain />
+            <NavMain initials={identity} />
 
             <Container className='mt-1 d-flex justify-content-center flex-column align-items-center'>
                 {project && ( // Add a null check before accessing project.Name
@@ -178,7 +228,7 @@ const RoProjects = () => {
                         </CardContent>
                         <CardActions sx={{ marginLeft: '10px', display: 'flex', justifyContent: 'space-between' }}>
 
-                
+
 
                             <div>
 
@@ -248,8 +298,16 @@ const RoProjects = () => {
 
             <Container style={{ marginTop: '80px' }}>
 
+                <Container style={{textAlign: 'center'}}>
+
+                <FormControlLabel control={<Switch defaultChecked={checked}/>} label={checked ? "Remove Highlight" : "Highlight Your Stories"} onClick={()=>setChecked(!checked)}/>
+
+                </Container>
+
+            
+
                 {
-                    (project && project.Data.length > 0) ? (
+                    (project && project.Data.length > 0 && displayedStories.length > 0) ? (
                         <Table striped>
                             <thead>
                                 <tr>
@@ -263,10 +321,10 @@ const RoProjects = () => {
                             <tbody>
 
                                 {
-                                    project ? project.Data.map((story) => {
+                                    displayedStories.length > 0 ? displayedStories.map((story,index) => {
                                         return (
 
-                                            <tr>
+                                            <tr style={{ border: (story.Developer == user && checked=== true) && '1px solid green',borderTop: index === 0 && story.Developer === user && '1px solid green', zIndex: '4' }}>
                                                 <td>{story.StoryId}</td>
                                                 <td>{story.Title}</td>
                                                 <td>{story.Developer}</td>
@@ -277,7 +335,7 @@ const RoProjects = () => {
                                                             <i class="fa-regular fa-eye" style={{ cursor: "pointer", fontSize: '20px', color: 'blue' }} onClick={() => storyRedirect(story._id, story.StoryId)}></i>
                                                         </OverlayTrigger>
                                                     </span>
-                                                    
+
 
 
                                                 </td>
@@ -288,10 +346,30 @@ const RoProjects = () => {
                                 }
 
 
+
+
                             </tbody>
                         </Table>
+
+
                     ) : null
                 }
+
+                {totalPages > 1 && (
+                    <Pagination>
+                        {[...Array(totalPages)].map((_, index) => (
+                            <Pagination.Item
+                                key={index + 1}
+                                active={index + 1 === currentPage}
+                                onClick={() => setCurrentPage(index + 1)}
+                            >
+                                {index + 1}
+                            </Pagination.Item>
+                        ))}
+                    </Pagination>
+                )}
+
+
 
 
 

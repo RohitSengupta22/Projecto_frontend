@@ -9,50 +9,50 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from 'axios';
 
-function ModalUpdStory({ show, handleClose, projectId,storyId }) {
+function ModalUpdStory({ show, handleClose, projectId, storyId }) {
 
     const [contributors, setContributors] = useState([])
-    const BASE_URL = 'http://localhost:3003/api';
+    const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
     const authToken = localStorage.getItem('token');
-    const [storyCred,setStoryCred] = useState(null)
-   
+    const [storyCred, setStoryCred] = useState(null)
+
     useEffect(() => {
         async function fetchStory() {
-          try {
-    
-            const response = await axios.get(`${BASE_URL}/story/${projectId}/${storyId}`)
-    
-            setStoryCred({
-                Title: response.data.story.Title,
-                Description: response.data.story.Description,
-                Developer:  response.data.story.Developer,
-                Status: response.data.story.Status,
-                Classification:  response.data.story.Classification,
-                Priority:  response.data.story.Priority,
-                Deadline: response.data.story.Deadline
-            })
-    
-    
-    
-          } catch (error) {
-    
-            console.log(error)
-    
-          }
-        }
-    
-        if (projectId && storyId) {
-          fetchStory();
-        }
-      }, [])
+            try {
 
-      useEffect(() => {
+                const response = await axios.get(`${BASE_URL}/story/${projectId}/${storyId}`)
+
+                setStoryCred({
+                    Title: response.data.story.Title,
+                    Description: response.data.story.Description,
+                    Developer: response.data.story.Developer,
+                    Status: response.data.story.Status,
+                    Classification: response.data.story.Classification,
+                    Priority: response.data.story.Priority,
+                    Deadline: response.data.story.Deadline
+                })
+
+
+
+            } catch (error) {
+
+                console.log(error)
+
+            }
+        }
+
+        if (projectId && storyId) {
+            fetchStory();
+        }
+    }, [])
+
+    useEffect(() => {
         async function fetchProject() {
             try {
 
                 const response = await axios.get(`${BASE_URL}/project/${projectId}`)
                 setContributors(response.data.project.AccessedBy)
-                
+
 
 
             } catch (error) {
@@ -68,13 +68,13 @@ function ModalUpdStory({ show, handleClose, projectId,storyId }) {
     }, [])
 
 
-     
-    
+
+
 
 
     const [value, setValue] = useState(null);
 
-    
+
 
 
 
@@ -84,19 +84,31 @@ function ModalUpdStory({ show, handleClose, projectId,storyId }) {
     }
 
     async function storyHandler() {
-
-        const response = await axios.patch(`${BASE_URL}/project/${projectId}/${storyId}`, storyCred, {
-            headers: {
-                'Content-Type': 'application/json',
-                "auth-token": authToken
-            },
-        })
-
-        setStoryCred(response.data.story)
-        
-        handleClose()
-
+        try {
+            const formattedDeadline = value ? value.toISOString() : null;
+            console.log('Request Payload:', { ...storyCred, Deadline: formattedDeadline });
+    
+            const response = await axios.patch(
+                `${BASE_URL}/project/${projectId}/${storyId}`,
+                { ...storyCred, Deadline: formattedDeadline+' (yyyy/mm/dd)' },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'auth-token': authToken,
+                    },
+                }
+            );
+    
+            console.log('Response:', response.data);
+    
+            setStoryCred(response.data.story);
+            handleClose();
+        } catch (error) {
+            console.error('Error updating story:', error);
+        }
     }
+    
+
 
 
 
@@ -174,7 +186,6 @@ function ModalUpdStory({ show, handleClose, projectId,storyId }) {
                             />
                         </DemoContainer>
                     </LocalizationProvider>
-
 
 
 

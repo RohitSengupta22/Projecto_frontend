@@ -6,7 +6,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 const ForgotPass = () => {
-  const BASE_URL = 'http://localhost:3003/api';
+  const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
   const navigate = useNavigate();
 
   const [resetCred, setResetCred] = useState({

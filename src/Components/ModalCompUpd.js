@@ -6,7 +6,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 
 function ModalCompUpd({ show, handleClose, updateProjects, projectCredUpd }) {
-  const BASE_URL = 'http://localhost:3003/api';
+  const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
   const authToken = localStorage.getItem('token');
   const { _id, Name, Description } = projectCredUpd || {};
 

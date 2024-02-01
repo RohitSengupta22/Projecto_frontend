@@ -7,7 +7,7 @@ import axios from 'axios';
 function RoModalUpdStory({ show, handleClose, projectId,storyId }) {
 
    
-    const BASE_URL = 'http://localhost:3003/api';
+    const BASE_URL = 'https://projecto-ha1h.onrender.com/api';
     const authToken = localStorage.getItem('token');
     const [storyCred,setStoryCred] = useState(null)
    

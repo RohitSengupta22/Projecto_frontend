@@ -1,4 +1,4 @@
-import { useState,useContext, useEffect } from 'react';
+import { useState,useContext, useEffect,useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
@@ -16,8 +16,9 @@ function Comments({ show, handleClose,story }) {
     const [storyId, setStoryId] = useContext(StoryContext)
     const [comments,setComments] = useState([])
     const [user,setUser] = useState('')
+    const curr = useRef()
     const authToken = localStorage.getItem('token');
-    const BASE_URL = 'http://localhost:3003/api';
+    const BASE_URL = 'https://projecto-ha1h.onrender.com';
 
     const [comment, setComment] = useState({
 
@@ -79,6 +80,7 @@ function Comments({ show, handleClose,story }) {
 
         if(comment.comment===''){
             alert('post a valid comment')
+           
         }else{
 
             try {
@@ -120,6 +122,9 @@ function Comments({ show, handleClose,story }) {
     }
 
    
+    
+
+   
 
 
     return (
@@ -141,7 +146,7 @@ function Comments({ show, handleClose,story }) {
                             value={comment.comment}
                         />
                     </FloatingLabel>
-                    <Button variant="primary" style={{ marginTop: '10px', width: '100%' }} onClick={commentHandler}>Post</Button>{' '}
+                    <Button variant="primary" style={{ marginTop: '10px', width: '100%' }} onClick={commentHandler} ref={curr}>Post</Button>{' '}
                     <Container>
                         {
                           comments &&  comments.map((comment) =>{
